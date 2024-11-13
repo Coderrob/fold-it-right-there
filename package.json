@@ -1,0 +1,60 @@
+{
+  "activationEvents": [
+    "*"
+  ],
+  "author": "Robert Lindley <rob@coderrob.com>",
+  "dependencies": {
+    "tree-sitter": "^0.22.1",
+    "tree-sitter-rust": "^0.23.1",
+    "tree-sitter-typescript": "^0.23.2",
+    "vscode": "^1.1.37"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Coderrob/fold-it-right-there.git"
+  },
+  "description": "Visual Studio Code Extension for Multi-language Function Folding",
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@stylistic/eslint-plugin": "^2.9.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^20",
+    "@types/vscode": "^1.60.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.3.6",
+    "assert": "^2.1.0",
+    "eslint": "^9.14.0",
+    "mocha": "^10.8.2",
+    "prettier": "^3.3.3",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.2.2",
+    "typescript-eslint": "^8.14.0",
+    "vscode-test": "^1.1.36"
+  },
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "keywords": [
+    "vscode",
+    "folding",
+    "fold",
+    "collapse"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "@coderrob/fold-it-right-there",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "publisher": "coderrob",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint",
+    "pretest": "npm run compile && npm run lint",
+    "prettier": "prettier --write src",
+    "test": "mocha --config .mocharc.json",
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -watch -p ./"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
