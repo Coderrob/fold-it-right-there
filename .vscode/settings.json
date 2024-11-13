@@ -1,0 +1,10 @@
+{
+  "editor.insertSpaces": false,
+  "git.branchProtection": ["main"],
+  "git.branchProtectionPrompt": "alwaysCommitToNewBranch",
+  "git.branchRandomName.enable": true,
+  "prettier.printWidth": 92,
+  "prettier.semi": true,
+  "prettier.singleQuote": true,
+  "prettier.useTabs": true
+}
