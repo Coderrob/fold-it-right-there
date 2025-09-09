@@ -1,13 +1,13 @@
+import assert from 'assert'
 import Parser from 'tree-sitter'
 import Rust from 'tree-sitter-rust'
 import TypeScript from 'tree-sitter-typescript'
-import { FunctionNodeFinder, MinimalNode } from '../functionNodeFinder.js'
-import { FunctionFoldingProvider } from '../functionFoldingProvider.js'
-import { ParserManager } from '../parserManager.js'
-import type * as vscode from 'vscode'
-import type ParserType from 'tree-sitter'
-import assert from 'assert'
 
+import { FunctionFoldingProvider } from '../function-folding.provider.js'
+import { FunctionNodeFinder, MinimalNode } from '../function-node.finder.js'
+import { ParserManager } from '../parser.manager.js'
+
+import type * as vscode from 'vscode'
 describe('FunctionFoldingProvider', () => {
   const finder = new FunctionNodeFinder()
 

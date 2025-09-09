@@ -1,7 +1,7 @@
+import glob from 'glob'
+import Mocha from 'mocha'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import Mocha from 'mocha'
-import glob from 'glob'
 
 export function run(): Promise<void> {
   const mocha = new Mocha({ ui: 'bdd', color: true })

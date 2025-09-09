@@ -1,6 +1,6 @@
 import type * as vscode from 'vscode'
-import { ParserManager } from './parserManager.js'
-import { FunctionNodeFinder, MinimalNode } from './'
+import { FunctionNodeFinder, MinimalNode } from './function-node.finder.js'
+import { ParserManager } from './parser.manager.js'
 
 /**
  * Provides folding ranges for functions in supported languages using tree-sitter.

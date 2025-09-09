@@ -1,5 +1,6 @@
 import assert from 'assert'
-import { ParserManager } from '../parserManager.js'
+
+import { ParserManager } from '../parser.manager.js'
 
 describe('ParserManager', () => {
   const pm = new ParserManager()

@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     async provideFoldingRanges(document, context, token) {
       if (!realProvider) {
         // dynamic import so tree-sitter and grammars load only when needed
-        const mod = await import('./functionFoldingProvider.js')
+        const mod = await import('./function-folding.provider.js')
         // the class expects the runtime vscode object
         realProvider = new mod.FunctionFoldingProvider(vscode)
       }

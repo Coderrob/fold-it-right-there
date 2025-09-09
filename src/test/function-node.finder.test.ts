@@ -1,5 +1,6 @@
 import assert from 'assert'
-import { FunctionNodeFinder, MinimalNode } from '../functionNodeFinder.js'
+
+import { FunctionNodeFinder, MinimalNode } from '../function-node.finder.js'
 
 describe('FunctionNodeFinder', () => {
   const finder = new FunctionNodeFinder()
