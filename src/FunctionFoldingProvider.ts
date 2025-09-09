@@ -1,72 +1,63 @@
-import vscode from 'vscode'
-import Parser from 'tree-sitter'
-import Rust from 'tree-sitter-rust'
-import TypeScript from 'tree-sitter-typescript'
+import type * as vscode from 'vscode'
+import { ParserManager } from './parserManager.js'
+import { FunctionNodeFinder, MinimalNode } from './functionNodeFinder.js'
 
+/**
+ * Provides folding ranges for functions in supported languages using tree-sitter.
+ * Implements the VS Code FoldingRangeProvider interface.
+ */
 export class FunctionFoldingProvider implements vscode.FoldingRangeProvider {
-  private parsers: Record<string, Parser>
+  private parserManager: ParserManager
+  private vscodeImpl: typeof vscode
 
-  constructor() {
-    this.parsers = {
-      rust: new Parser(),
-      typescript: new Parser(),
-      javascript: new Parser(),
-      // Add other languages and their parsers here
-    }
+  private finder: FunctionNodeFinder
 
-    this.parsers['rust'].setLanguage(Rust)
-    this.parsers['typescript'].setLanguage(TypeScript.typescript)
+  /**
+   * Creates a new FunctionFoldingProvider instance.
+   * @param vscodeImpl The VS Code API implementation.
+   * @param finder Optional custom FunctionNodeFinder instance.
+   */
+  constructor(vscodeImpl: typeof vscode, finder?: FunctionNodeFinder) {
+    this.parserManager = new ParserManager()
+    this.vscodeImpl = vscodeImpl
+    this.finder = finder ?? new FunctionNodeFinder()
   }
 
+  /**
+   * Provides folding ranges for the given document.
+   * @param document The VS Code text document.
+   * @param context The folding context (unused).
+   * @param token The cancellation token (unused).
+   * @returns A promise that resolves to an array of folding ranges.
+   */
   async provideFoldingRanges(
     document: vscode.TextDocument
-    // context: vscode.FoldingContext,
-    // token: vscode.CancellationToken
   ): Promise<vscode.FoldingRange[]> {
     const languageId = document.languageId
-    const parser = this.parsers[languageId]
+    const parser = this.parserManager.getParser(languageId)
 
-    if (!parser) {
+    if (!parser) return []
+
+    try {
+      const sourceCode = document.getText()
+      const tree = parser.parse(sourceCode)
+      const functionNodes = this.finder.findFunctionNodes(
+        tree.rootNode as unknown as MinimalNode,
+        languageId
+      )
+      return functionNodes.map(
+        (node: MinimalNode) =>
+          new this.vscodeImpl.FoldingRange(
+            node.startPosition!.row,
+            node.endPosition!.row,
+            this.vscodeImpl.FoldingRangeKind.Region
+          )
+      )
+    } catch {
+      // If parsing fails for any reason, return empty; avoid throwing inside the provider
       return []
     }
-
-    const sourceCode = document.getText()
-    const tree = parser.parse(sourceCode)
-    const functionNodes = this.getFunctionNodes(tree.rootNode)
-
-    return functionNodes.map((node) => {
-      const startLine = node.startPosition.row
-      const endLine = node.endPosition.row
-      return new vscode.FoldingRange(
-        startLine,
-        endLine,
-        vscode.FoldingRangeKind.Region
-      )
-    })
   }
 
-  private getFunctionNodes(node: Parser.SyntaxNode): Parser.SyntaxNode[] {
-    let functions: Parser.SyntaxNode[] = []
-
-    if (this.isFunctionNode(node)) {
-      functions.push(node)
-    }
-
-    for (const child of node.children) {
-      functions = functions.concat(this.getFunctionNodes(child))
-    }
-
-    return functions
-  }
-
-  private isFunctionNode(node: Parser.SyntaxNode): boolean {
-    const functionNodeTypes = [
-      'function_item', // Rust
-      'function_declaration', // TypeScript/JavaScript
-      'method_definition', // TypeScript/JavaScript
-      // Add other function node types here
-    ]
-
-    return functionNodeTypes.includes(node.type)
-  }
+  // legacy helpers removed in favor of FunctionNodeFinder
 }

@@ -10,4 +10,3 @@ export default [
   ...tseslint.configs.stylistic,
   { plugins: { '@stylistic': stylistic } },
 ]
-

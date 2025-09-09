@@ -1,4 +1,5 @@
 # Build artifacts:
 out/
 coverage/
+.vscode-test/
 node_modules/
