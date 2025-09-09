@@ -17,6 +17,7 @@
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@stylistic/eslint-plugin": "^2.9.0",
+    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.9",
     "@types/node": "^20",
     "@types/vscode": "^1.60.0",
@@ -28,6 +29,7 @@
     "prettier": "^3.3.3",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
+    "ts-prune": "^0.10.3",
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.14.0",
     "vscode-test": "^1.1.36"
@@ -41,17 +43,21 @@
     "fold",
     "collapse"
   ],
-  "license": "ISC",
-  "main": "index.js",
+  "license": "Apache-2.0",
+  "main": "./out/index.js",
   "name": "@coderrob/fold-it-right-there",
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "publisher": "coderrob",
   "scripts": {
     "compile": "tsc -p ./",
-    "lint": "eslint",
+    "lint": "eslint src",
     "pretest": "npm run compile && npm run lint",
     "prettier": "prettier --write src",
-    "test": "mocha --config .mocharc.json",
+    "test": "mocha out/test/function-folding.provider.test.js out/test/function-node.finder.test.js out/test/parser.manager.test.js",
+    "test:integration": "npm run compile && node ./out/test/runIntegrationTests.js",
+    "integration:run": "npm run compile && INTEGRATION_LAUNCH_ARGS=\"\" node ./out/test/runIntegrationTests.js",
+    "clean:files": "node ./scripts/clean.js",
+    "scan:unused-exports": "ts-prune --project tsconfig.json",
     "vscode:prepublish": "npm run compile",
     "watch": "tsc -watch -p ./"
   },
