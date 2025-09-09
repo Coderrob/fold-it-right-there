@@ -1,6 +1,6 @@
 import type * as vscode from 'vscode'
 import { ParserManager } from './parserManager.js'
-import { FunctionNodeFinder, MinimalNode } from './functionNodeFinder.js'
+import { FunctionNodeFinder, MinimalNode } from './'
 
 /**
  * Provides folding ranges for functions in supported languages using tree-sitter.
@@ -16,9 +16,14 @@ export class FunctionFoldingProvider implements vscode.FoldingRangeProvider {
    * Creates a new FunctionFoldingProvider instance.
    * @param vscodeImpl The VS Code API implementation.
    * @param finder Optional custom FunctionNodeFinder instance.
+   * @param parserManager Optional custom ParserManager instance.
    */
-  constructor(vscodeImpl: typeof vscode, finder?: FunctionNodeFinder) {
-    this.parserManager = new ParserManager()
+  constructor(
+    vscodeImpl: typeof vscode,
+    finder?: FunctionNodeFinder,
+    parserManager?: ParserManager
+  ) {
+    this.parserManager = parserManager ?? new ParserManager()
     this.vscodeImpl = vscodeImpl
     this.finder = finder ?? new FunctionNodeFinder()
   }

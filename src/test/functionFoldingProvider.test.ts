@@ -98,29 +98,27 @@ describe('FunctionFoldingProvider', () => {
     })
 
     it('returns empty when parser throws during parse', async () => {
-      // Monkeypatch ParserManager.getParser to return a parser that throws
-      const original = ParserManager.prototype.getParser
-      ParserManager.prototype.getParser = function () {
-        return {
+      const mockParserManager = {
+        getParser: () => ({
           parse: () => {
             throw new Error('parse failed')
           },
-        } as unknown as ParserType
-      }
+        }),
+      } as unknown as ParserManager
 
-      try {
-        const provider = new FunctionFoldingProvider(
-          mockVscode as unknown as typeof vscode
-        )
-        const doc = {
-          languageId: 'typescript',
-          getText: () => 'invalid code',
-        } as unknown as vscode.TextDocument
-        const ranges = await provider.provideFoldingRanges(doc)
-        assert.deepStrictEqual(ranges, [])
-      } finally {
-        ParserManager.prototype.getParser = original
-      }
+      const provider = new FunctionFoldingProvider(
+        mockVscode as unknown as typeof vscode,
+        undefined,
+        mockParserManager
+      )
+
+      const doc = {
+        languageId: 'typescript',
+        getText: () => 'invalid code',
+      } as unknown as vscode.TextDocument
+
+      const ranges = await provider.provideFoldingRanges(doc)
+      assert.deepStrictEqual(ranges, [])
     })
   })
 })
