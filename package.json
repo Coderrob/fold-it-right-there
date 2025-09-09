@@ -53,7 +53,7 @@
     "lint": "eslint src",
     "pretest": "npm run compile && npm run lint",
     "prettier": "prettier --write src",
-    "test": "mocha out/test/functionFoldingProvider.test.js out/test/functionNodeFinder.test.js out/test/parserManager.test.js",
+    "test": "mocha out/test/function-folding.provider.test.js out/test/function-node.finder.test.js out/test/parser.manager.test.js",
     "test:integration": "npm run compile && node ./out/test/runIntegrationTests.js",
     "integration:run": "npm run compile && INTEGRATION_LAUNCH_ARGS=\"\" node ./out/test/runIntegrationTests.js",
     "clean:files": "node ./scripts/clean.js",
